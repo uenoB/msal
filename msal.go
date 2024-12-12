@@ -4,6 +4,7 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"net/url"
@@ -13,14 +14,25 @@ import (
 )
 
 func main() {
-	if len(os.Args) != 2 {
-		fmt.Fprintf(os.Stderr, "usage: %s config.json\n", os.Args[0])
+	var (
+		refresh = flag.Bool("R", false, "force refresh")
+	)
+	flag.Parse()
+
+	if flag.NArg() != 1 {
+		fmt.Fprintf(os.Stderr,
+			    "usage: %s [-R] config.json\n",
+			    os.Args[0])
 		os.Exit(1)
 	}
 
-	config, err := OpenConfig(os.Args[1])
+	config, err := OpenConfig(flag.Arg(0))
 	if err != nil {
 		log.Fatal(err)
+	}
+
+	if (*refresh) {
+		config.Token = nil
 	}
 
 	client, err := public.New(config.ClientID, public.WithCache(config))
