@@ -20,9 +20,10 @@ func main() {
 	flag.Parse()
 
 	if flag.NArg() != 1 {
-		fmt.Fprintf(os.Stderr,
-			    "usage: %s [-R] config.json\n",
-			    os.Args[0])
+		fmt.Fprintf(
+			os.Stderr,
+			"usage: %s [-R] config.json\n",
+			os.Args[0])
 		os.Exit(1)
 	}
 
@@ -32,7 +33,7 @@ func main() {
 	}
 	defer config.Close()
 
-	if (*refresh) {
+	if *refresh {
 		config.Token = nil
 	}
 
