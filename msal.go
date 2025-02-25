@@ -30,6 +30,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer config.Close()
 
 	if (*refresh) {
 		config.Token = nil
@@ -93,6 +94,4 @@ func main() {
 	}
 
 	fmt.Println(result.AccessToken)
-
-	config.Close()
 }
